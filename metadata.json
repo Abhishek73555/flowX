@@ -1,0 +1,7 @@
+{
+  "name": "flow-x - Intelligent Time Management",
+  "description": "An intelligent assistant to help you plan, track, and optimize your daily schedule with profession-aware insights and voice reminders.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

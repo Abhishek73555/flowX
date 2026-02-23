@@ -1,0 +1,314 @@
+/* ThemeToggle.css */
+/* 
+  BB-8 Theme Toggle Switch Implementation
+*/
+
+.theme-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0.45); /* Scale to fit header nicely */
+  transform-origin: right center;
+  margin-right: -20px;
+}
+
+.bb8-toggle {
+  --toggle-width: 150px;
+  --toggle-height: 70px;
+  --bb8-size: 60px;
+  --bg-day: #689DCA;
+  --bg-night: #151D29;
+  --ground-day: #C49F7D;
+  --ground-night: #655241;
+  
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  background: var(--bg-day);
+  border-radius: 50px;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.5s ease-in-out;
+  overflow: hidden;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.bb8-toggle:checked {
+  background: var(--bg-night);
+}
+
+/* Base scenery container */
+.scenery {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Ground */
+.ground {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 25px;
+  background: var(--ground-day);
+  transition: background 0.5s ease-in-out;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  z-index: 1;
+}
+
+.bb8-toggle:checked ~ .scenery .ground {
+  background: var(--ground-night);
+}
+
+/* Sun / Day Elements */
+.sun {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  width: 20px;
+  height: 20px;
+  background: #FFF;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #FFF, 0 0 20px #FFF;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.sun-2 {
+  position: absolute;
+  top: 25px;
+  right: 15px;
+  width: 15px;
+  height: 15px;
+  background: #FF7B00;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #FF7B00, 0 0 20px #FF7B00;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.clouds {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  width: 40px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  filter: blur(1px);
+}
+.clouds::before, .clouds::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+}
+.clouds::before { width: 15px; height: 15px; top: -8px; left: 8px; }
+.clouds::after { width: 10px; height: 10px; top: -5px; right: 8px; }
+
+/* Moon / Night Elements */
+.moon {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  width: 25px;
+  height: 25px;
+  background: #EAEAEA;
+  border-radius: 50%;
+  box-shadow: inset -5px -2px 0 rgba(0,0,0,0.1), 0 0 15px rgba(255, 255, 255, 0.3);
+  transform: translateY(50px);
+  opacity: 0;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.moon-craters {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #C4C4C4;
+  border-radius: 50%;
+  top: 8px;
+  left: 6px;
+  box-shadow: 10px 4px 0 -1.5px #C4C4C4, 4px 10px 0 -2px #C4C4C4;
+}
+
+.stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 2s infinite alternate;
+}
+
+.star:nth-child(1) { width: 2px; height: 2px; top: 10px; left: 15px; }
+.star:nth-child(2) { width: 1px; height: 1px; top: 25px; left: 35px; animation-delay: 0.5s; }
+.star:nth-child(3) { width: 2px; height: 2px; top: 5px; left: 60px; animation-delay: 1.2s; }
+.star:nth-child(4) { width: 1px; height: 1px; top: 30px; left: 50px; animation-delay: 0.2s; }
+.star:nth-child(5) { width: 1.5px; height: 1.5px; top: 15px; left: 80px; animation-delay: 0.8s; }
+
+@keyframes twinkle {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+/* Animations based on state */
+.bb8-toggle:checked ~ .scenery .sun { transform: translateY(50px); opacity: 0; }
+.bb8-toggle:checked ~ .scenery .sun-2 { transform: translateY(50px); opacity: 0; }
+.bb8-toggle:checked ~ .scenery .clouds { transform: translateX(50px); opacity: 0; }
+.bb8-toggle:checked ~ .scenery .moon { transform: translateY(0); opacity: 1; }
+.bb8-toggle:checked ~ .scenery .stars { opacity: 1; }
+
+
+/* BB-8 Character */
+.bb8 {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: var(--bb8-size);
+  height: var(--bb8-size);
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.bb8-toggle:checked ~ .bb8 {
+  transform: translateX(80px);
+}
+
+.bb8-head {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  width: 40px;
+  height: 25px;
+  background: #FFF;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  overflow: hidden;
+  box-shadow: inset -2px -2px 5px rgba(0,0,0,0.2), 0 2px 3px rgba(0,0,0,0.2);
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  z-index: 3;
+}
+
+.bb8-head::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: -5px;
+  width: 50px;
+  height: 2px;
+  background: #D76F3A;
+}
+
+.bb8-head::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: -5px;
+  width: 50px;
+  height: 4px;
+  background: #C4C4C4;
+}
+
+.bb8-eye {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  background: #111;
+  border-radius: 50%;
+  border: 2px solid #C4C4C4;
+}
+
+.bb8-eye-small {
+  position: absolute;
+  top: 14px;
+  left: 28px;
+  width: 4px;
+  height: 4px;
+  background: #111;
+  border-radius: 50%;
+}
+
+.bb8-antenna {
+  position: absolute;
+  top: -20px;
+  left: 20px;
+  width: 1px;
+  height: 12px;
+  background: #555;
+  z-index: 1;
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.bb8-body {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  background: #FFF;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2);
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.circle {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 4px solid #D76F3A;
+  border-radius: 50%;
+}
+
+.circle-1 { top: 15px; left: 15px; }
+.circle-2 { top: 15px; left: -25px; opacity: 0.5;}
+.circle-3 { top: 15px; right: -25px; opacity: 0.5; }
+
+.circle-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: #C4C4C4;
+  border-radius: 50%;
+}
+
+.line {
+  position: absolute;
+  background: #D76F3A;
+}
+
+.line-1 { width: 4px; height: 10px; top: 0; left: 28px; }
+.line-2 { width: 4px; height: 10px; bottom: 0; left: 28px; }
+.line-3 { width: 10px; height: 4px; top: 28px; left: 0; }
+.line-4 { width: 10px; height: 4px; top: 28px; right: 0; }
+
+/* Spin body on toggle */
+.bb8-toggle:checked ~ .bb8 .bb8-body {
+  transform: rotate(360deg);
+}
+.bb8-toggle:checked ~ .bb8 .bb8-head {
+  transform: translateX(5px) rotate(5deg);
+}
+.bb8-toggle:checked ~ .bb8 .bb8-antenna {
+  transform: translateX(5px) rotate(5deg);
+}
